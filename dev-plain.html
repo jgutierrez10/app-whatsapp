@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Widget WhatsApp - Desarrollo Plain CSS</title>
+    
+    <style>
+        .container { max-width: 800px; margin: 50px auto; padding: 20px; text-align: center; }
+        h2 { margin-bottom: 30px; color: #333; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h2>⚪ Widget WhatsApp - CSS Puro</h2>
+    </div>
+
+    <!-- Contenedor del widget -->
+    <div id="whatsapp-app-container" 
+         data-type="plain"
+         data-endpoint="https://httpbin.org/post"
+         data-project="Desarrollo Plain"
+         data-phone="+1234567890">
+    </div>
+
+    <script type="module" src="/src/main.js"></script>
+</body>
+</html>
