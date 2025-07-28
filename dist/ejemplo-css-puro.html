@@ -1,12 +1,12 @@
 <!DOCTYPE html>
-<html lang="es">
+<html lang='es'>
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta charset='UTF-8'>
+    <meta name='viewport' content='width=device-width, initial-scale=1.0'>
     <title>WhatsApp Widget - Ejemplo CSS Puro</title>
     
-    <!-- WhatsApp Widget CDN -->
-    <script src="./whatsapp-widget.js"></script>
+    <!-- WhatsApp Widget CSS - Ruta corregida -->
+    <link rel='stylesheet' href='./assets/index-DBxqkryE.css'>
     
     <style>
         body {
@@ -44,32 +44,72 @@
             border-radius: 10px;
             margin: 1rem 0;
         }
+        
+        #debug-info {
+            background: #e9ecef;
+            padding: 1rem;
+            border-radius: 8px;
+            margin-top: 2rem;
+            font-size: 0.875rem;
+        }
     </style>
 </head>
 <body>
-    <div class="container">
+    <div class='container'>
         <h1>🌟 Mi Landing Page</h1>
-        <p class="subtitle">Widget de WhatsApp sin dependencias de Bootstrap</p>
+        <p class='subtitle'>Widget de WhatsApp sin dependencias de Bootstrap</p>
         
-        <div class="feature">
+        <div class='feature'>
             <h3>✨ CSS Puro</h3>
             <p>Sin necesidad de frameworks adicionales</p>
         </div>
         
-        <div class="feature">
+        <div class='feature'>
             <h3>📱 Responsive</h3>
             <p>Se adapta a cualquier dispositivo</p>
         </div>
         
         <p><strong>¡Mira el botón flotante en la esquina inferior derecha!</strong></p>
+        
+        <!-- Debug info -->
+        <div id='debug-info'>
+            <small>Estado del widget: Cargando...</small>
+        </div>
     </div>
 
     <!-- Widget de WhatsApp - Sin Bootstrap -->
-    <div id="whatsapp-app-container" 
-         data-type="plain"
-         data-endpoint="https://httpbin.org/post"
-         data-project="Landing Page CSS Puro"
-         data-phone="+5491234567890">
+    <div id='whatsapp-app-container' 
+         data-type='plain'
+         data-endpoint='https://httpbin.org/post'
+         data-project='Landing Page CSS Puro'
+         data-phone='+5491234567890'>
     </div>
+
+    <!-- WhatsApp Widget JS - Ruta corregida -->
+    <script type='module' src='./assets/index-DDNDYwvq.js'></script>
+    
+    <!-- Debug script -->
+    <script>
+        setTimeout(() => {
+            const container = document.getElementById('whatsapp-app-container');
+            const debugDiv = document.getElementById('debug-info');
+            
+            if (container) {
+                const isMounted = container.hasAttribute('data-whatsapp-mounted');
+                const button = container.querySelector('.whatsapp-float-button');
+                
+                debugDiv.innerHTML = `
+                    <strong>Debug Info:</strong><br>
+                    • Contenedor encontrado: ✅<br>
+                    • Widget montado: ${isMounted ? '✅' : '❌'}<br>
+                    • Botón visible: ${button ? '✅' : '❌'}<br>
+                    • Tipo: ${container.getAttribute('data-type')}<br>
+                    • Teléfono: ${container.getAttribute('data-phone')}
+                `;
+            } else {
+                debugDiv.innerHTML = '<span style="color: #dc3545;">❌ Contenedor no encontrado</span>';
+            }
+        }, 3000);
+    </script>
 </body>
 </html>
