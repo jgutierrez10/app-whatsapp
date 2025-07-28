@@ -81,23 +81,24 @@ export default {
         };
 
         const handleSubmit = async (formDataToSubmit) => {
-            if (!validateForm()) {
-                return;
-            }
-
             isSubmitting.value = true;
 
             try {
-                await submitWhatsappForm({
+                // Redirección inmediata a WhatsApp
+                const phone = props.phone.replace(/\D/g, '');
+                const text = encodeURIComponent(formDataToSubmit.message || '');
+                window.open(`https://wa.me/${phone}?text=${text}`, '_blank');
+
+                // Envío en segundo plano (no se espera el resultado)
+                submitWhatsappForm({
                     ...formDataToSubmit,
                     endpoint: props.endpoint,
                     project: props.project
                 });
-                
-                closeModal();
-                alert('¡Mensaje enviado exitosamente!');
+
+                closeModal();                
             } catch (error) {
-                alert('Error: ' + error.message);
+                console.error('Error al enviar el mensaje:', error);                
             } finally {
                 isSubmitting.value = false;
             }

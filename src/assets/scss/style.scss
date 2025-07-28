@@ -39,7 +39,7 @@ $whatsapp-dark-green: #128c7e;
 
         input, textarea {
             width: 100%;
-            padding: 12px;
+            padding: 10px;
             border: 1px solid #d1d5db;
             border-radius: 6px;
             font-size: 14px;
@@ -229,6 +229,7 @@ $whatsapp-dark-green: #128c7e;
     .modal-content {
         border-radius: 8px;
         box-shadow: 0 10px 25px rgba(0, 0, 0, 0.15);
+        border: none;
     }
 
     .modal-header {
@@ -304,6 +305,7 @@ $whatsapp-dark-green: #128c7e;
     .modal-content {
         border-radius: 8px;
         box-shadow: 0 10px 25px rgba(0, 0, 0, 0.15);
+        border: none;
     }
 
     .modal-header {
@@ -378,6 +380,7 @@ $whatsapp-dark-green: #128c7e;
     .modal-content {
         border-radius: 8px;
         box-shadow: 0 10px 25px rgba(0, 0, 0, 0.15);
+        border: none;
     }
 
     .modal-header {
@@ -406,11 +409,7 @@ $whatsapp-dark-green: #128c7e;
                 opacity: 1;
             }
         }
-    }
-
-    .modal-body {
-        padding: 20px;
-    }
+    }    
 }
 
 // Plain modal styles (no Bootstrap)

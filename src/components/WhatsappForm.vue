@@ -12,7 +12,6 @@
             />
             <div v-if="errors.name" class="error-message">{{ errors.name }}</div>
         </div>
-
         <div class="form-group">
             <label for="whatsapp-email">Correo Electrónico</label>
             <input
@@ -25,7 +24,6 @@
             />
             <div v-if="errors.email" class="error-message">{{ errors.email }}</div>
         </div>
-
         <div class="form-group">
             <label for="whatsapp-phone">Teléfono</label>
             <div class="phone-input-group">
@@ -41,7 +39,6 @@
             </div>
             <div v-if="errors.phone" class="error-message">{{ errors.phone }}</div>
         </div>
-
         <div class="form-group">
             <label for="whatsapp-message">Mensaje</label>
             <textarea
@@ -58,7 +55,6 @@
             </div>
             <div v-if="errors.message" class="error-message">{{ errors.message }}</div>
         </div>
-
         <div class="form-actions">
             <button 
                 type="submit" 
@@ -96,7 +92,7 @@ export default {
     setup(props, { emit }) {
         const { formData, errors, isSubmitting, validateForm, isFormValid } = useWhatsappForm();
 
-        const handleSubmit = () => {
+        const handleSubmit = () => {            
             if (validateForm()) {
                 emit('submit', { ...formData });
             }
