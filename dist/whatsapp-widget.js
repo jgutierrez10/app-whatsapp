@@ -16,7 +16,7 @@
     'use strict';
     
     // Configuración base del CDN
-    const CDN_BASE_URL = 'https://tu-cdn.com/dist/'; // Cambiar por tu URL de CDN
+    const CDN_BASE_URL = 'https://jgutierrez10.github.io/app-whatsapp/dist/'; // Cambiar por tu URL de CDN
     
     // Cargar CSS del widget
     function loadCSS() {
