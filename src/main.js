@@ -1,82 +1,135 @@
 import { createApp } from 'vue'
-
 import './assets/scss/style.scss'
 import App from './App.vue'
 import WhatsappApp from './components/WhatsappApp.vue'
 
-// Mount the main demo app
-createApp(App).mount('#app')
+// Map para almacenar instancias montadas y poder desmontar si hace falta
+const mountedApps = new WeakMap()
 
-// Auto-mount WhatsApp widgets on all containers
-function mountWhatsappWidgets() {
-    const containers = document.querySelectorAll('div[id="whatsapp-app-container"]');
-    
-    containers.forEach(container => {
-        // Skip if already mounted
-        if (container.hasAttribute('data-whatsapp-mounted')) {
-            return;
+// Montar la app demo solo si existe el root #app y estamos en desarrollo
+const tryMountDemoApp = () => {
+    const demoRoot = document.getElementById('app')
+    if (!demoRoot) {
+        console.log('No #app element found — skipping demo mount')
+        return
+    }
+    // montar demo solo en entorno dev
+    if (import.meta.env && import.meta.env.DEV) {
+        try {
+            createApp(App).mount('#app')
+            console.log('Demo app mounted on #app')
+        } catch (err) {
+            console.error('Failed to mount demo app:', err)
         }
-
-        // Get data attributes
-        const type = container.getAttribute('data-type');
-        const endpoint = container.getAttribute('data-endpoint');
-        const project = container.getAttribute('data-project');
-        const phone = container.getAttribute('data-phone');
-
-        // Validate required attributes
-        if (!type || !endpoint || !project || !phone) {
-            console.error('WhatsApp widget container missing required data attributes:', {
-                type, endpoint, project, phone
-            });
-            return;
-        }
-
-        // Validate type
-        if (!['bootstrap-3', 'bootstrap-4', 'bootstrap-5', 'plain'].includes(type)) {
-            console.error('Invalid WhatsApp widget type:', type);
-            return;
-        }
-
-        // Create and mount the app
-        const app = createApp(WhatsappApp, {
-            type,
-            endpoint,
-            project,
-            phone
-        });
-
-        app.mount(container);
-        
-        // Mark as mounted
-        container.setAttribute('data-whatsapp-mounted', 'true');
-    });
+    } else {
+        console.log('Skipping demo mount in production')
+    }
 }
 
-// Initial mount
-document.addEventListener('DOMContentLoaded', mountWhatsappWidgets);
+// Auto-mount WhatsApp widgets en todos los contenedores
+export function mountWhatsappWidgets() {
+    const containers = document.querySelectorAll('#whatsapp-app-container')
+    if (!containers.length) {
+        // no containers found
+        return
+    }
 
-// Watch for dynamically added containers
-if (typeof MutationObserver !== 'undefined') {
-    const observer = new MutationObserver((mutations) => {
-        mutations.forEach((mutation) => {
-            mutation.addedNodes.forEach((node) => {
-                if (node.nodeType === 1) { // Element node
-                    // Check if the added node is a container
-                    if (node.id === 'whatsapp-app-container') {
-                        mountWhatsappWidgets();
-                    }
-                    // Check for containers within the added node
-                    const containers = node.querySelectorAll && node.querySelectorAll('div[id="whatsapp-app-container"]');
-                    if (containers && containers.length > 0) {
-                        mountWhatsappWidgets();
-                    }
+    containers.forEach(container => {
+        // evitar montaje duplicado
+        if (container.getAttribute('data-whatsapp-mounted') === 'true') return
+
+        const type = container.dataset.type
+        const endpoint = container.dataset.endpoint
+        const project = container.dataset.project
+        const phone = container.dataset.phone
+
+        // Validaciones básicas
+        if (!type || !endpoint || !project || !phone) {
+            console.warn('Whatsapp container missing data-attributes:', { type, endpoint, project, phone })
+            return
+        }
+        if (!['bootstrap-3', 'bootstrap-4', 'bootstrap-5', 'plain'].includes(type)) {
+            console.warn('Invalid whatsapp type:', type)
+            return
+        }
+
+        try {
+            // crear wrapper interno para no reemplazar contenido del container host
+            let mountRoot = container.querySelector('.whatsapp-mount-root')
+            if (!mountRoot) {
+                mountRoot = document.createElement('div')
+                mountRoot.className = 'whatsapp-mount-root'
+                // append mantiene el contenido existente del container
+                container.appendChild(mountRoot)
+            }
+
+            const app = createApp(WhatsappApp, { type, endpoint, project, phone })
+            app.mount(mountRoot)
+
+            // almacenar referencia para posible unmount
+            mountedApps.set(container, { app, mountRoot })
+
+            container.setAttribute('data-whatsapp-mounted', 'true')
+            console.log('Whatsapp widget mounted inside container', container)
+        } catch (err) {
+            console.error('Error mounting Whatsapp widget:', err)
+        }
+    })
+}
+
+// Función para desmontar widgets cuyo contenedor fue removido
+function cleanupUnmountedContainers() {
+    // recorremos las keys (no iterable directamente; mantenemos WeakMap de container->instance)
+    // para simplicidad, comprobamos todos los contenedores actuales y removemos entradas no existentes
+    // (WeakMap se limpia automáticamente cuando no hay referencias)
+    // Aquí intentamos desmontar apps cuyo container ya no está en document
+    document.querySelectorAll('[data-whatsapp-mounted="true"]').forEach(container => {
+        if (!document.documentElement.contains(container)) {
+            const entry = mountedApps.get(container)
+            if (entry && entry.app) {
+                try {
+                    entry.app.unmount()
+                    console.log('Unmounted whatsapp app for removed container')
+                } catch (err) {
+                    console.error('Error unmounting whatsapp app:', err)
                 }
-            });
-        });
-    });
+            }
+            mountedApps.delete(container)
+        }
+    })
+}
 
-    observer.observe(document.body, {
+// Inicialización al cargar el DOM
+if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', () => {
+        tryMountDemoApp()
+        mountWhatsappWidgets()
+    })
+} else {
+    tryMountDemoApp()
+    mountWhatsappWidgets()
+}
+
+// Observador para contenedores añadidos dinámicamente y limpieza de removidos
+if (typeof MutationObserver !== 'undefined') {
+    const observer = new MutationObserver(mutations => {
+        let added = false
+        let removed = false
+
+        for (const m of mutations) {
+            if (m.addedNodes && m.addedNodes.length) added = true
+            if (m.removedNodes && m.removedNodes.length) removed = true
+            if (added && removed) break
+        }
+
+        if (added) mountWhatsappWidgets()
+        if (removed) cleanupUnmountedContainers()
+    })
+    observer.observe(document.documentElement || document.body, {
         childList: true,
         subtree: true
-    });
+    })
 }
+
+// Exponer para uso manual / debug
+window.mountWhatsappWidgets = mountWhatsappWidgets

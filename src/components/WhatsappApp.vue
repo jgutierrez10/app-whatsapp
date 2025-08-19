@@ -1,6 +1,6 @@
 <template>
-    <!-- Botón flotante de WhatsApp -->
-    <button 
+    <!-- Botón flotante: solo esto quedará dentro del contenedor host -->
+    <button
         class="whatsapp-float-button"
         @click="showModal"
         title="Contactar por WhatsApp"
@@ -8,115 +8,93 @@
         <img :src="whatsappIcon" alt="WhatsApp" class="whatsapp-icon">
     </button>
 
-    <!-- Modal componente -->
-    <component 
-        :is="modalComponent" 
-        :is-visible="isVisible"
-        :phone="phone"
-        :project="project"
-        :endpoint="endpoint"
-        @close="closeModal"
-        @submit="handleSubmit"
-    />
+    <!-- Modal: teletransportado a body para no alterar el DOM de la página host -->
+    <teleport to="body">
+        <component
+            v-if="isVisible"
+            :is="modalComponent"
+            :is-visible="isVisible"
+            :phone="phone"
+            :project="project"
+            :endpoint="endpoint"
+            @close="closeModal"
+            @submit="handleSubmit"
+        />
+    </teleport>
 </template>
 
 <script>
-import { ref, computed, onMounted } from 'vue';
-import { submitWhatsappForm } from '../services/whatsappService.js';
-import { useWhatsappForm } from '../composables/useWhatsappForm.js';
-import WhatsappBS3 from './WhatsappBS3.vue';
-import WhatsappBS4 from './WhatsappBS4.vue';
-import WhatsappBS5 from './WhatsappBS5.vue';
-import WhatsappPlain from './WhatsappPlain.vue';
-import whatsappIcon from '../assets/images/whatsapp.png';
+import { ref, computed } from 'vue'
+import { submitWhatsappForm } from '../services/whatsappService.js'
+import WhatsappBS3 from './WhatsappBS3.vue'
+import WhatsappBS4 from './WhatsappBS4.vue'
+import WhatsappBS5 from './WhatsappBS5.vue'
+import WhatsappPlain from './WhatsappPlain.vue'
+import whatsappIcon from '../assets/images/whatsapp.png'
 
 export default {
     name: 'WhatsappApp',
-    components: {
-        WhatsappBS3,
-        WhatsappBS4,
-        WhatsappBS5,
-        WhatsappPlain
-    },
     props: {
-        type: {
-            type: String,
-            required: true,
-            validator: (value) => ['bootstrap-3', 'bootstrap-4', 'bootstrap-5', 'plain'].includes(value)
-        },
-        endpoint: {
-            type: String,
-            required: true
-        },
-        project: {
-            type: String,
-            required: true
-        },
-        phone: {
-            type: String,
-            required: true
-        }
+        type: { type: String, required: true },
+        endpoint: { type: String, required: true },
+        project: { type: String, required: true },
+        phone: { type: String, required: true }
     },
     setup(props) {
-        const isVisible = ref(false);
-        const { formData, errors, isSubmitting, validateForm, resetForm } = useWhatsappForm();
+        const isVisible = ref(false)
+        const isSubmitting = ref(false)
 
         const modalComponent = computed(() => {
-            const componentMap = {
-                'bootstrap-3': 'WhatsappBS3',
-                'bootstrap-4': 'WhatsappBS4',
-                'bootstrap-5': 'WhatsappBS5',
-                'plain': 'WhatsappPlain'
-            };
-            return componentMap[props.type];
-        });
+            const map = {
+                'bootstrap-3': WhatsappBS3,
+                'bootstrap-4': WhatsappBS4,
+                'bootstrap-5': WhatsappBS5,
+                'plain': WhatsappPlain
+            }
+            return map[props.type] || WhatsappPlain
+        })
 
         const showModal = () => {
-            isVisible.value = true;
-        };
+            isVisible.value = true
+        }
 
         const closeModal = () => {
-            isVisible.value = false;
-            resetForm();
-        };
+            isVisible.value = false
+        }
 
-        const handleSubmit = async (formDataToSubmit) => {
-            isSubmitting.value = true;
-
+        const handleSubmit = async (formData) => {
+            isSubmitting.value = true
             try {
-                // Redirección inmediata a WhatsApp
-                const phone = props.phone.replace(/\D/g, '');
-                const text = encodeURIComponent(formDataToSubmit.message || '');
-                window.open(`https://wa.me/${phone}?text=${text}`, '_blank');
-
-                // Envío en segundo plano (no se espera el resultado)
+                // Envío en segundo plano (no await)
                 submitWhatsappForm({
-                    ...formDataToSubmit,
+                    ...formData,
                     endpoint: props.endpoint,
                     project: props.project
-                });
+                }).catch(err => console.error('Background submit error:', err))
 
-                closeModal();                
-            } catch (error) {
-                console.error('Error al enviar el mensaje:', error);                
+                // Redirección inmediata a wa.me
+                const phone = props.phone.replace(/\D/g, '')
+                const text = encodeURIComponent(formData.message || '')
+                window.open(`https://wa.me/${phone}?text=${text}`, '_blank')
+
+                closeModal()
+            } catch (err) {
+                console.error('handleSubmit error:', err)
             } finally {
-                isSubmitting.value = false;
+                isSubmitting.value = false
             }
-        };
-
-        onMounted(() => {
-            // Expose showModal to global scope for external triggering
-            window.showWhatsappModal = showModal;
-        });
+        }
 
         return {
             isVisible,
+            isSubmitting,
             modalComponent,
             showModal,
             closeModal,
             handleSubmit,
             whatsappIcon
-        };
+        }
     }
-};
+}
 </script>
+<!-- no styles en el componente -->
