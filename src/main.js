@@ -42,10 +42,16 @@ export function mountWhatsappWidgets() {
         const endpoint = container.dataset.endpoint
         const project = container.dataset.project
         const phone = container.dataset.phone
+        const privacyPolicyUrl = container.dataset.privacyPolicyUrl
+        const policySite = container.dataset.sitePolicy
+        const policyEmail = container.dataset.emailPolicy
+        const cdnBaseAttr = container.dataset.cdnBase || ''
+        const globalCdn = (typeof window !== 'undefined' && window.WHATSAPP_WIDGET_CDN) ? String(window.WHATSAPP_WIDGET_CDN) : ''
+        const cdnBase = cdnBaseAttr || globalCdn || ''
 
         // Validaciones básicas
-        if (!type || !endpoint || !project || !phone) {
-            console.warn('Whatsapp container missing data-attributes:', { type, endpoint, project, phone })
+        if (!type || !endpoint || !project || !phone || !privacyPolicyUrl || !policySite || !policyEmail) {
+            console.warn('Whatsapp container missing data-attributes:', { type, endpoint, project, phone, privacyPolicyUrl, policySite, policyEmail })
             return
         }
         if (!['bootstrap-3', 'bootstrap-4', 'bootstrap-5', 'plain'].includes(type)) {
@@ -63,7 +69,7 @@ export function mountWhatsappWidgets() {
                 container.appendChild(mountRoot)
             }
 
-            const app = createApp(WhatsappApp, { type, endpoint, project, phone })
+            const app = createApp(WhatsappApp, { type, endpoint, project, phone, privacyPolicyUrl, policySite, policyEmail, cdnBase })
             app.mount(mountRoot)
 
             // almacenar referencia para posible unmount

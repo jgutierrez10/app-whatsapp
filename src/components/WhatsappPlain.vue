@@ -18,6 +18,9 @@
                     input-class="form-input"
                     submit-button-class="btn-submit"
                     cancel-button-class="btn-cancel"
+                    :privacy-policy-url="privacyPolicyUrl"
+                    :policy-site="policySite"
+                    :policy-email="policyEmail"
                     @submit="$emit('submit', $event)"
                     @cancel="$emit('close')"
                 />
@@ -27,8 +30,8 @@
 </template>
 
 <script>
-import WhatsappForm from './WhatsappForm.vue';
-import whatsappIcon from '../assets/images/whatsapp.png';
+import WhatsappForm from './WhatsappForm.vue'
+import bundledWhatsappIcon from '../assets/images/whatsapp.png'
 
 export default {
     name: 'WhatsappPlain',
@@ -36,20 +39,18 @@ export default {
         WhatsappForm
     },
     props: {
-        isVisible: {
-            type: Boolean,
-            default: false
-        },
-        phone: {
-            type: String,
-            required: true
-        }
+        isVisible: { type: Boolean, default: false },
+        phone: { type: String, required: true },
+        privacyPolicyUrl: { type: String, required: true },
+        policySite: { type: String, required: true },
+        policyEmail: { type: String, required: true },
+        whatsappIcon: { type: String, default: '' }
     },
     emits: ['close', 'submit'],
-    setup() {
+    setup(props) {
         return {
-            whatsappIcon
-        };
+            whatsappIcon: props.whatsappIcon || bundledWhatsappIcon
+        }
     }
 };
 </script>

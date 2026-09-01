@@ -2,7 +2,7 @@
 import { defineConfig } from "vite"
 import vue from "@vitejs/plugin-vue"
 
-const version = "v1"
+const version = "v1.2" // actualizar con cada release
 
 export default defineConfig({
   	base: `/app-whatsapp/${version}/`,
@@ -18,4 +18,3 @@ export default defineConfig({
     	}
   	}
 })
-

@@ -31,6 +31,9 @@ Agrega un contenedor div con los atributos de datos requeridos:
     data-endpoint="/api/contact"
     data-project="Mi Proyecto"
     data-phone="+56912345678"
+    data-privacy-policy-url="https://tu-sitio.com/politica-de-privacidad"
+    data-site-policy="https://tu-sitio.com"
+    data-email-policy="contacto@tu-sitio.com"
 ></div>
 ```
 
@@ -40,6 +43,10 @@ Agrega un contenedor div con los atributos de datos requeridos:
 - `data-endpoint`: URL del endpoint de la API
 - `data-project`: Nombre del proyecto (se incluye en el payload)
 - `data-phone`: Número de teléfono de WhatsApp para mostrar
+
+- `data-privacy-policy-url`: Enlace a la Política de Privacidad. Es obligatorio y se muestra junto al checkbox de aceptación.
+- `data-site-policy`: Sitio mostrado como enlace dentro del texto de autorización.
+- `data-email-policy`: Correo mostrado en el texto de autorización y usado en su enlace de contacto.
 
 ### Tipos de Modal Disponibles
 
@@ -81,6 +88,7 @@ src/
     "email": "juan@email.com", 
     "phone": "912345678",
     "message": "Hola, necesito información...",
+    "policy": true,
     "project": "Mi Proyecto"
 }
 ```

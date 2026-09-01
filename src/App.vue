@@ -13,6 +13,9 @@
 						endpoint="https://httpbin.org/post"
 						project="Desarrollo BS5"
 						phone="+56912345678"
+						privacy-policy-url="https://example.com/politica-de-privacidad"
+						policy-site="https://example.com"
+						policy-email="contacto@example.com"
 					/>
 				</div>						
 				<!-- Bootstrap 4 Widget -->
@@ -24,6 +27,9 @@
 						endpoint="https://httpbin.org/post"
 						project="Desarrollo BS4"
 						phone="+56912345678"
+						privacy-policy-url="https://example.com/politica-de-privacidad"
+						policy-site="https://example.com"
+						policy-email="contacto@example.com"
 					/>
 				</div>						
 				<!-- Plain CSS Widget -->
@@ -35,6 +41,9 @@
 						endpoint="https://httpbin.org/post"
 						project="Desarrollo Plain"
 						phone="+56912345678"
+						privacy-policy-url="https://example.com/politica-de-privacidad"
+						policy-site="https://example.com"
+						policy-email="contacto@example.com"
 					/>
 				</div>						
 				<!-- Bootstrap 3 Widget -->
@@ -46,6 +55,9 @@
 						endpoint="https://httpbin.org/post"
 						project="Desarrollo BS3"
 						phone="+56912345678"
+						privacy-policy-url="https://example.com/politica-de-privacidad"
+						policy-site="https://example.com"
+						policy-email="contacto@example.com"
 					/>
 				</div>						
 				<div class="info-card">

@@ -6,14 +6,16 @@ export function useWhatsappForm() {
         name: '',
         email: '',
         phone: '',
-        message: ''
+        message: '',
+        privacyPolicyAccepted: false
     });
 
     const errors = reactive({
         name: '',
         email: '',
         phone: '',
-        message: ''
+        message: '',
+        privacyPolicyAccepted: ''
     });
 
     const isSubmitting = ref(false);
@@ -35,7 +37,11 @@ export function useWhatsappForm() {
             ? 'El mensaje debe tener entre 10 y 300 caracteres' 
             : '';
 
-        return !errors.name && !errors.email && !errors.phone && !errors.message;
+        errors.privacyPolicyAccepted = !formData.privacyPolicyAccepted
+            ? 'Debes aceptar la Política de Privacidad para continuar'
+            : '';
+
+        return !errors.name && !errors.email && !errors.phone && !errors.message && !errors.privacyPolicyAccepted;
     };
 
     const resetForm = () => {
@@ -43,11 +49,13 @@ export function useWhatsappForm() {
         formData.email = '';
         formData.phone = '';
         formData.message = '';
+        formData.privacyPolicyAccepted = false;
         
         errors.name = '';
         errors.email = '';
         errors.phone = '';
         errors.message = '';
+        errors.privacyPolicyAccepted = '';
     };
 
     const isFormValid = computed(() => {
@@ -55,6 +63,7 @@ export function useWhatsappForm() {
                formData.email && 
                formData.phone && 
                formData.message &&
+               formData.privacyPolicyAccepted &&
                validateName(formData.name) && 
                validateEmail(formData.email) && 
                validatePhone(formData.phone) && 

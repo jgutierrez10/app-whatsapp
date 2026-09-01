@@ -26,7 +26,10 @@ Simplemente incluye el script en tu página HTML:
          data-type="bootstrap-5"
          data-endpoint="https://tu-api.com/contact"
          data-project="Mi Proyecto"
-         data-phone="+1234567890">
+         data-phone="+1234567890"
+         data-privacy-policy-url="https://tu-sitio.com/politica-de-privacidad"
+         data-site-policy="https://tu-sitio.com"
+         data-email-policy="contacto@tu-sitio.com">
     </div>
 </body>
 </html>
@@ -45,6 +48,15 @@ URL donde se enviarán los datos del formulario
 
 ### data-project
 Nombre del proyecto que se incluirá en el payload
+
+### data-privacy-policy-url
+URL de la Política de Privacidad. Es obligatoria para que el usuario pueda enviar el formulario.
+
+### data-email-policy
+Correo mostrado en el texto de autorización, con un enlace de contacto.
+
+### data-site-policy
+Sitio mostrado como enlace dentro del texto de autorización.
 
 ### data-phone
 Número de WhatsApp en formato internacional

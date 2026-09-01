@@ -1,5 +1,6 @@
 <template>
     <form @submit.prevent="handleSubmit" class="whatsapp-form">
+        <p class="form-intro">Completa tus datos para continuar:</p>
         <div class="form-group">
             <label for="whatsapp-name">Nombre</label>
             <input
@@ -39,7 +40,7 @@
             </div>
             <div v-if="errors.phone" class="error-message">{{ errors.phone }}</div>
         </div>
-        <div class="form-group">
+        <div class="form-group mb-1">
             <label for="whatsapp-message">Mensaje</label>
             <textarea
                 id="whatsapp-message"
@@ -54,6 +55,24 @@
                 {{ (formData.message || '').length }}/300
             </div>
             <div v-if="errors.message" class="error-message">{{ errors.message }}</div>
+        </div>
+        <div class="privacy-policy-group">
+            <label class="privacy-policy-label">
+                <input
+                    v-model="formData.privacyPolicyAccepted"
+                    type="checkbox"
+                    class="privacy-policy-checkbox"
+                    required
+                />
+                <span>
+                    He leído y acepto la
+                    <a :href="privacyPolicyUrl" target="_blank" rel="noopener noreferrer" @click.stop>Política de Privacidad</a>.
+                </span>
+            </label>
+            <p class="privacy-policy-disclaimer mt-1">
+                Autorizo expresamente a <a :href="policySite" target="_blank" rel="noopener noreferrer" @click.stop>{{ policySiteLabel }}</a> a recolectar y tratar mis datos personales (nombre, apellido, correo electrónico y teléfono) con la finalidad de contactarme, responder a mis consultas y gestionar los servicios solicitados. Puedo ejercer mis derechos de acceso, rectificación, cancelación, oposición o portabilidad enviando un correo a <a :href="`mailto:${policyEmail}`" @click.stop>{{ policyEmail }}</a>.
+            </p>
+            <div v-if="errors.privacyPolicyAccepted" class="error-message">{{ errors.privacyPolicyAccepted }}</div>
         </div>
         <div class="form-actions">
             <button 
@@ -86,6 +105,18 @@ export default {
         cancelButtonClass: {
             type: String,
             default: 'btn btn-secondary'
+        },
+        privacyPolicyUrl: {
+            type: String,
+            required: true
+        },
+        policySite: {
+            type: String,
+            required: true
+        },
+        policyEmail: {
+            type: String,
+            required: true
         }
     },
     emits: ['submit', 'cancel'],
@@ -105,13 +136,25 @@ export default {
             return '';
         });
 
+        const policySiteLabel = computed(() => {
+            try {
+                return new URL(props.policySite).hostname.replace(/^www\./, '');
+            } catch {
+                return props.policySite;
+            }
+        });
+
         return {
             formData,
             errors,
             isSubmitting,
             isFormValid,
             handleSubmit,
-            counterClass
+            counterClass,
+            privacyPolicyUrl: props.privacyPolicyUrl,
+            policySite: props.policySite,
+            policySiteLabel,
+            policyEmail: props.policyEmail
         };
     }
 };

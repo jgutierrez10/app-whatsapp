@@ -1,14 +1,14 @@
 {
 	"name": "app-whatsapp-v2",
 	"private": true,
-	"version": "1.0.0",
+	"version": "1.2.0",
 	"type": "module",
 	"homepage": "https://jgutierrez10.github.io/app-whatsapp",
 	"scripts": {
 		"dev": "vite",
 		"build": "vite build",
 		"preview": "vite preview",
-		"copy-latest": "cpx \"dist/v1/**/*\" dist/latest",
+		"copy-latest": "cpx \"dist/v1.2/**/*\" dist/latest",
 		"deploy": "npm run build && npm run copy-latest && gh-pages -d dist"
 	},
 	"dependencies": {

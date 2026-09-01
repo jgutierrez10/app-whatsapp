@@ -18,7 +18,10 @@
          data-type="bootstrap-5"
          data-endpoint="https://tu-api.com/contact"
          data-project="Mi Proyecto"
-         data-phone="+1234567890">
+         data-phone="+1234567890"
+         data-privacy-policy-url="https://tu-sitio.com/politica-de-privacidad"
+         data-site-policy="https://tu-sitio.com"
+         data-email-policy="contacto@tu-sitio.com">
     </div>
 </body>
 </html>
@@ -51,6 +54,15 @@ URL del endpoint donde se enviarán los datos del formulario.
 ### data-project (requerido)
 Nombre del proyecto que se incluirá en el payload enviado al endpoint.
 
+### data-privacy-policy-url (requerido)
+URL de la Política de Privacidad. El formulario solo se puede enviar cuando el usuario la acepta.
+
+### data-email-policy (requerido)
+Correo mostrado en el texto de autorización, con un enlace para contactar.
+
+### data-site-policy (requerido)
+Sitio mostrado como enlace dentro del texto de autorización.
+
 ### data-phone (requerido)
 Número de WhatsApp en formato internacional (ej: +1234567890).
 
@@ -62,7 +74,10 @@ Número de WhatsApp en formato internacional (ej: +1234567890).
      data-type="bootstrap-5"
      data-endpoint="https://api.miempresa.com/contacto"
      data-project="Sitio Web Corporativo"
-     data-phone="+5491234567890">
+     data-phone="+5491234567890"
+     data-privacy-policy-url="https://miempresa.com/politica-de-privacidad"
+     data-site-policy="https://miempresa.com"
+     data-email-policy="contacto@miempresa.com">
 </div>
 ```
 
@@ -72,7 +87,10 @@ Número de WhatsApp en formato internacional (ej: +1234567890).
      data-type="plain"
      data-endpoint="https://hooks.zapier.com/hooks/catch/123456/abcdef"
      data-project="Landing Page"
-     data-phone="+34612345678">
+     data-phone="+34612345678"
+     data-privacy-policy-url="https://miempresa.com/politica-de-privacidad"
+     data-site-policy="https://miempresa.com"
+     data-email-policy="contacto@miempresa.com">
 </div>
 ```
 
@@ -82,7 +100,10 @@ Número de WhatsApp en formato internacional (ej: +1234567890).
      data-type="bootstrap-4"
      data-endpoint="https://formspree.io/f/xeqwerty"
      data-project="Blog Personal"
-     data-phone="+5255987654321">
+     data-phone="+5255987654321"
+     data-privacy-policy-url="https://miempresa.com/politica-de-privacidad"
+     data-site-policy="https://miempresa.com"
+     data-email-policy="contacto@miempresa.com">
 </div>
 ```
 
@@ -96,6 +117,7 @@ El widget enviará los siguientes datos al endpoint configurado:
     "email": "juan@ejemplo.com", 
     "phone": "123456789",
     "message": "Hola, me interesa su producto...",
+    "policy": true,
     "project": "Mi Proyecto"
 }
 ```

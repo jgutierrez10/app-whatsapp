@@ -9,6 +9,7 @@ import api from '../api/index.js';
  * @param {string} data.email - The email address of the user.
  * @param {string} data.phone - The phone number of the user.
  * @param {string} data.message - The message content from the user.
+ * @param {boolean} data.privacyPolicyAccepted - Whether the user accepted the privacy policy.
  * @param {string} data.project - The project related to the form submission.
  * 
  * @returns {Promise<Object>} The response data from the API.
@@ -21,6 +22,7 @@ export const submitWhatsappForm = async (data) => {
             email: data.email,
             phone: data.phone,
             message: data.message,
+            policy: data.privacyPolicyAccepted,
             proyect: data.project
         });
         return response.data;
