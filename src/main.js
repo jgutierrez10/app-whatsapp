@@ -45,6 +45,7 @@ export function mountWhatsappWidgets() {
         const privacyPolicyUrl = container.dataset.privacyPolicyUrl
         const policySite = container.dataset.sitePolicy
         const policyEmail = container.dataset.emailPolicy
+        const showPrivacyPolicyDisclaimer = container.dataset.showPrivacyPolicyDisclaimer === 'true'
         const cdnBaseAttr = container.dataset.cdnBase || ''
         const globalCdn = (typeof window !== 'undefined' && window.WHATSAPP_WIDGET_CDN) ? String(window.WHATSAPP_WIDGET_CDN) : ''
         const cdnBase = cdnBaseAttr || globalCdn || ''
@@ -69,7 +70,7 @@ export function mountWhatsappWidgets() {
                 container.appendChild(mountRoot)
             }
 
-            const app = createApp(WhatsappApp, { type, endpoint, project, phone, privacyPolicyUrl, policySite, policyEmail, cdnBase })
+            const app = createApp(WhatsappApp, { type, endpoint, project, phone, privacyPolicyUrl, policySite, policyEmail, showPrivacyPolicyDisclaimer, cdnBase })
             app.mount(mountRoot)
 
             // almacenar referencia para posible unmount

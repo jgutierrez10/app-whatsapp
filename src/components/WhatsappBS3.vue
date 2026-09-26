@@ -22,6 +22,7 @@
                         :privacy-policy-url="privacyPolicyUrl"
                         :policy-site="policySite"
                         :policy-email="policyEmail"
+                        :show-privacy-policy-disclaimer="showPrivacyPolicyDisclaimer"
                         @submit="$emit('submit', $event)"
                         @cancel="$emit('close')"
                     />
@@ -49,6 +50,7 @@ export default {
         privacyPolicyUrl: { type: String, required: true },
         policySite: { type: String, required: true },
         policyEmail: { type: String, required: true },
+        showPrivacyPolicyDisclaimer: { type: Boolean, default: false },
         whatsappIcon: { type: String, default: '' }
     },
     emits: ['close', 'submit'],

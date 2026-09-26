@@ -20,6 +20,7 @@
             :privacy-policy-url="privacyPolicyUrl"
             :policy-site="policySite"
             :policy-email="policyEmail"
+            :show-privacy-policy-disclaimer="showPrivacyPolicyDisclaimer"
             :whatsapp-icon="whatsappIcon"
             @close="closeModal"
             @submit="handleSubmit"
@@ -46,6 +47,7 @@ export default {
         privacyPolicyUrl: { type: String, required: true },
         policySite: { type: String, required: true },
         policyEmail: { type: String, required: true },
+        showPrivacyPolicyDisclaimer: { type: Boolean, default: false },
         cdnBase: { type: String, default: '' }
     },
     setup(props) {

@@ -69,7 +69,7 @@
                     <a :href="privacyPolicyUrl" target="_blank" rel="noopener noreferrer" @click.stop>Política de Privacidad</a>.
                 </span>
             </label>
-            <p class="privacy-policy-disclaimer mt-1">
+            <p v-if="showPrivacyPolicyDisclaimer" class="privacy-policy-disclaimer mt-1">
                 Autorizo expresamente a <a :href="policySite" target="_blank" rel="noopener noreferrer" @click.stop>{{ policySiteLabel }}</a> a recolectar y tratar mis datos personales (nombre, apellido, correo electrónico y teléfono) con la finalidad de contactarme, responder a mis consultas y gestionar los servicios solicitados. Puedo ejercer mis derechos de acceso, rectificación, cancelación, oposición o portabilidad enviando un correo a <a :href="`mailto:${policyEmail}`" @click.stop>{{ policyEmail }}</a>.
             </p>
             <div v-if="errors.privacyPolicyAccepted" class="error-message">{{ errors.privacyPolicyAccepted }}</div>
@@ -117,6 +117,10 @@ export default {
         policyEmail: {
             type: String,
             required: true
+        },
+        showPrivacyPolicyDisclaimer: {
+            type: Boolean,
+            default: false
         }
     },
     emits: ['submit', 'cancel'],

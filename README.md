@@ -34,6 +34,7 @@ Agrega un contenedor div con los atributos de datos requeridos:
     data-privacy-policy-url="https://tu-sitio.com/politica-de-privacidad"
     data-site-policy="https://tu-sitio.com"
     data-email-policy="contacto@tu-sitio.com"
+    data-show-privacy-policy-disclaimer="true"
 ></div>
 ```
 
@@ -45,8 +46,12 @@ Agrega un contenedor div con los atributos de datos requeridos:
 - `data-phone`: Número de teléfono de WhatsApp para mostrar
 
 - `data-privacy-policy-url`: Enlace a la Política de Privacidad. Es obligatorio y se muestra junto al checkbox de aceptación.
-- `data-site-policy`: Sitio mostrado como enlace dentro del texto de autorización.
-- `data-email-policy`: Correo mostrado en el texto de autorización y usado en su enlace de contacto.
+- `data-site-policy`: Sitio usado en el texto de autorización cuando este se activa.
+- `data-email-policy`: Correo usado en el texto de autorización cuando este se activa.
+
+### Atributo Opcional
+
+- `data-show-privacy-policy-disclaimer="true"`: Muestra el texto de autorización bajo el checkbox. Si se omite o tiene otro valor, el texto permanece oculto.
 
 ### Tipos de Modal Disponibles
 
