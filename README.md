@@ -120,6 +120,23 @@ npm run build
 npm run preview
 ```
 
+## Pruebas
+
+El proyecto utiliza Vitest, Vue Test Utils y jsdom. Las pruebas no realizan peticiones reales al endpoint ni abren WhatsApp.
+
+```bash
+# Modo watch
+npm.cmd run test
+
+# EjecuciÃ³n Ãºnica
+npm.cmd run test:run
+
+# Cobertura con umbral mÃ­nimo de 90% en lÃ­neas, funciones, sentencias y ramas
+npm.cmd run test:coverage
+```
+
+El reporte HTML se genera en `coverage/` y no se versiona.
+
 ## Contribuir
 
 1. Fork el proyecto

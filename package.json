@@ -8,6 +8,9 @@
 		"dev": "vite",
 		"build": "vite build",
 		"preview": "vite preview",
+		"test": "vitest",
+		"test:run": "vitest run",
+		"test:coverage": "vitest run --coverage",
 		"copy-latest": "cpx \"dist/v1.2/**/*\" dist/latest",
 		"deploy": "npm run build && npm run copy-latest && gh-pages -d dist"
 	},
@@ -18,9 +21,13 @@
 	},
 	"devDependencies": {
 		"@vitejs/plugin-vue": "^6.0.0",
+		"@vitest/coverage-v8": "5.0.2",
+		"@vue/test-utils": "2.5.1",
 		"cpx": "^1.5.0",
 		"gh-pages": "^6.3.0",
+		"jsdom": "27.4.0",
 		"rimraf": "^6.0.1",
-		"vite": "^7.0.4"
+		"vite": "^7.0.4",
+		"vitest": "5.0.2"
 	}
 }
